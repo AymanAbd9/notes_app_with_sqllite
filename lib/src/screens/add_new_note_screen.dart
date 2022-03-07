@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:sqllite/src/data_models/note.dart';
 import 'package:sqllite/src/db/notes_database.dart';
+import 'package:sqllite/src/providers/theme_provider.dart';
 
 class AddNewNoteScreenView extends StatefulWidget {
   const AddNewNoteScreenView({Key? key}) : super(key: key);
@@ -29,28 +31,35 @@ class _AddNewNoteScreenViewState extends State<AddNewNoteScreenView> {
         child: Column(
           children: [
             noteTextField(),
+            const SizedBox(
+              height: 8,
+            ),
             pickDateCardButton(),
+            const SizedBox(
+              height: 8,
+            ),
             ElevatedButton(
-                onPressed: () async {
-                  // declare the new note
-                  note = Note(title: titleController.text, date: selectedDate);
+              onPressed: () async {
+                // declare the new note
+                note = Note(title: titleController.text, date: selectedDate);
 
-                  // create the new note
-                  await NotesDatabase.instance.create(note);
+                // create the new note
+                await NotesDatabase.instance.create(note);
 
-                  // go back to notes screen
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Add note')),
+                // go back to notes screen
+                Navigator.of(context).pop();
+              },
+              child: const Text('Add note'),
+            ),
           ],
         ),
       ),
     );
   }
 
-
   Widget noteTextField() {
     return Card(
+      elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: TextField(
@@ -72,6 +81,7 @@ class _AddNewNoteScreenViewState extends State<AddNewNoteScreenView> {
         _selectDate(context);
       },
       child: Card(
+        elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: TextField(

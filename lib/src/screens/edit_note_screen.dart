@@ -19,7 +19,7 @@ class _EditNoteScreenViewState extends State<EditNoteScreenView> {
   void initState() {
     super.initState();
     titleController.text = widget.note.title;
-    dateController.text = widget.note.date.toString();
+    dateController.text = DateFormat.yMMMd().format(widget.note.date);
     selectedDate = widget.note.date;
   }
 
@@ -36,7 +36,10 @@ class _EditNoteScreenViewState extends State<EditNoteScreenView> {
         child: Column(
           children: [
             noteTextField(),
+            const SizedBox(height: 8,),
             pickDateCardButton(),
+            const SizedBox(height: 8,),
+
             ElevatedButton(
                 onPressed: () async {
                   // declare the new note
@@ -44,6 +47,7 @@ class _EditNoteScreenViewState extends State<EditNoteScreenView> {
                     title: titleController.text,
                     date: selectedDate,
                   );
+                  
 
                   // update note
                   await NotesDatabase.instance.update(note);
@@ -60,6 +64,7 @@ class _EditNoteScreenViewState extends State<EditNoteScreenView> {
 
   Widget noteTextField() {
     return Card(
+      elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: TextField(
@@ -81,6 +86,7 @@ class _EditNoteScreenViewState extends State<EditNoteScreenView> {
         _selectDate(context);
       },
       child: Card(
+        elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: TextField(
@@ -107,7 +113,7 @@ class _EditNoteScreenViewState extends State<EditNoteScreenView> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        dateController.text = DateFormat.yMMMd().format(picked).toString();
+        dateController.text = DateFormat.yMMMd().format(picked);
       });
     }
   }

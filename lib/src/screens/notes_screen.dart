@@ -44,8 +44,8 @@ class _NotesScreenViewState extends State<NotesScreenView> {
       floatingActionButton: addNewNoteButton(),
       appBar: AppBar(
         title: const Text('Notes'),
-        // actions: [
-        //   IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+        // actions: const [
+        //   ChangeThemeButtonWidget(),
         // ],
         centerTitle: true,
       ),
@@ -61,7 +61,7 @@ class _NotesScreenViewState extends State<NotesScreenView> {
   }
 
   Widget buildNotes() => ListView.builder(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(10),
         itemCount: notes.length,
         itemBuilder: (context, index) {
           final note = notes[index];
@@ -80,10 +80,12 @@ class _NotesScreenViewState extends State<NotesScreenView> {
       );
 
   Widget noteCardWidget({required Note note}) {
-    return Container(
+    return Card(
       margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(10),
-      child: Card(
+      elevation: 4,
+      child: Container(
+        //margin: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Slidable(
           key: ValueKey(note.id),
           child: ListTile(
@@ -99,9 +101,9 @@ class _NotesScreenViewState extends State<NotesScreenView> {
           endActionPane: ActionPane(
             dismissible: DismissiblePane(
               onDismissed: () async {
-                  await NotesDatabase.instance.delete(note.id!);
-                  refreshNotes();
-                },
+                await NotesDatabase.instance.delete(note.id!);
+                refreshNotes();
+              },
             ),
             motion: const ScrollMotion(),
             children: [
