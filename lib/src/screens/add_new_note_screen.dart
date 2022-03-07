@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sqllite/src/data_models/note.dart';
 import 'package:sqllite/src/db/notes_database.dart';
 
@@ -97,7 +98,7 @@ class _AddNewNoteScreenViewState extends State<AddNewNoteScreenView> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        dateController.text = picked.toString();
+        dateController.text = DateFormat.yMMMd().format(picked);
       });
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqllite/src/data_models/note.dart';
 import 'package:sqllite/src/db/notes_database.dart';
+import 'package:intl/intl.dart';
 
 class EditNoteScreenView extends StatefulWidget {
   const EditNoteScreenView({Key? key, required this.note}) : super(key: key);
@@ -106,7 +107,7 @@ class _EditNoteScreenViewState extends State<EditNoteScreenView> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        dateController.text = picked.toString();
+        dateController.text = DateFormat.yMMMd().format(picked).toString();
       });
     }
   }

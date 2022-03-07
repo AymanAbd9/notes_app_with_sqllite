@@ -4,6 +4,7 @@ import 'package:sqllite/src/db/notes_database.dart';
 import 'package:sqllite/src/screens/add_new_note_screen.dart';
 import 'package:sqllite/src/screens/edit_note_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class NotesScreenView extends StatefulWidget {
   const NotesScreenView({Key? key}) : super(key: key);
@@ -83,15 +84,38 @@ class _NotesScreenViewState extends State<NotesScreenView> {
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
       child: Card(
-        child: ListTile(
-          title: Text(note.title),
-          subtitle: Text(DateFormat.yMMMd().format(note.date).toString()),
-          trailing: IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () async {
-                await NotesDatabase.instance.delete(note.id!);
-                refreshNotes();
-              }),
+        child: Slidable(
+          key: ValueKey(note.id),
+          child: ListTile(
+            title: Text(note.title),
+            subtitle: Text(DateFormat.yMMMd().format(note.date).toString()),
+            // trailing: IconButton(
+            //     icon: const Icon(Icons.delete, color: Colors.red),
+            //     onPressed: () async {
+            //       await NotesDatabase.instance.delete(note.id!);
+            //       refreshNotes();
+            //     }),
+          ),
+          endActionPane: ActionPane(
+            dismissible: DismissiblePane(
+              onDismissed: () async {
+                  await NotesDatabase.instance.delete(note.id!);
+                  refreshNotes();
+                },
+            ),
+            motion: const ScrollMotion(),
+            children: [
+              SlidableAction(
+                onPressed: (context) async {
+                  await NotesDatabase.instance.delete(note.id!);
+                  refreshNotes();
+                },
+                backgroundColor: Colors.red,
+                icon: Icons.delete,
+                label: 'delete',
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -103,7 +127,7 @@ class _NotesScreenViewState extends State<NotesScreenView> {
         // added the await keyword to push function to update the screen after the note had been created
         await Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const AddNewNoteScreenView()));
-            refreshNotes();
+        refreshNotes();
       },
       child: const Icon(Icons.add),
     );
